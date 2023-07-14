@@ -14,11 +14,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/notes.html'));
+    res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
 app.get('/api/notes', (req, res) => {
-    fs.readFile(path.join(__dirname, './db/db.json'), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, '/db/db.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading db.json:', err);
             res.status(500).json({ error: 'Internal server error' });
@@ -39,7 +39,7 @@ app.post('/api/notes', (req, res) => {
     const note = req.body;
     const newNote = { id: uuidv4(), ...note };
 
-    fs.readFile(path.join(__dirname, './db/db.json'), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, '/db/db.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading db.json:', err);
             res.status(500).json({ error: 'Internal server error' });
@@ -50,7 +50,7 @@ app.post('/api/notes', (req, res) => {
             const notes = JSON.parse(data);
             notes.push(newNote);
 
-            fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notes), 'utf8', (err) => {
+            fs.writeFile(path.join(__dirname, '/db/db.json'), JSON.stringify(notes), 'utf8', (err) => {
                 if (err) {
                     console.error('Error writing to db.json:', err);
                     res.status(500).json({ error: 'Internal server error' });
@@ -69,13 +69,13 @@ app.post('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req, res) => {
     const noteId = req.params.id;
 
-    fs.readFile(path.join(__dirname, './db/db.json'), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, '/db/db.json'), 'utf8', (err, data) => {
         if (err) throw err;
 
         let notes = JSON.parse(data);
         notes = notes.filter(note => note.id !== noteId);
 
-        fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notes), (err) => {
+        fs.writeFile(path.join(__dirname, '/db/db.json'), JSON.stringify(notes), (err) => {
             if (err) throw err;
             res.sendStatus(204); // Send a 204 No Content response
         });
